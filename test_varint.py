@@ -14,4 +14,10 @@ if __name__ == '__main__':
     assert f.tell() == 5
     f.seek(1)
     assert f.read(1) == 'B'
+    f.seek(0)
+    assert varint.test_file_seek(f, 0) == 'A'
+    assert f.tell() == 1
+    f.seek(0)
+    assert varint.test_file_seek(f, 0) == 'A'
+    assert f.tell() == 1
     f.close()
