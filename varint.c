@@ -58,7 +58,3 @@ void varint_write(PyObject* p, int n) {
 	PyFile_DecUseCount(p2);
 }
 
-int main() {
-
-	return 0;
-}
