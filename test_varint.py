@@ -4,27 +4,24 @@ import varint
 import os
 
 if __name__ == '__main__':
-    f = open('./varint.txt','r+b')
-    f.seek(1)
-    assert f.read(1) == 'B'
-    assert f.read(1) == 'C'
-    assert f.tell() == 3
-    assert varint.test_file_seek(f, 0) == 'D'
-    assert f.tell() == 4
-    assert f.read(1) == 'E'
-    assert f.tell() == 5
-    f.seek(1)
-    assert f.read(1) == 'B'
-    f.seek(0)
-    assert varint.test_file_seek(f, 0) == 'A'
-    assert f.tell() == 1
-    f.seek(0)
-    assert varint.test_file_seek(f, 0) == 'A'
-    assert f.tell() == 1
-    f.seek(0)
-    assert f.read(1) == 'A'
-    assert varint.test_file_seek(f,0) == 'B'
-    f.seek(1, os.SEEK_CUR)
-    assert varint.test_file_seek(f,0) == 'D'
-    assert f.read(1) == 'E'
+    test_ns = [42,4353,33,666,99,3443]
+    test_file = '/tmp/varint-test.txt'
+
+    # write first
+    f = open(test_file,'w+b')
+    for n in test_ns:
+        varint.varint_write(f,n)
+    f.flush()
     f.close()
+
+    # check if written
+    f = open(test_file,'r+b')
+    for exp in test_ns:
+        n = varint.varint_read(f)
+        print 'Varint read: ', n
+        print 'Expected: ', exp
+        assert(n == exp)
+    f.close()
+
+    # remove test file
+    os.remove(test_file)
