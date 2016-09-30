@@ -17,7 +17,7 @@ class TestVarint(unittest.TestCase):
             self.assertEqual(f.tell(), 1)
             f.seek(0)
 
-            varint.varint_write(f, 2 ** 6)
+            varint.varint_write(f, 2 ** 7 - 1)
             self.assertEqual(f.tell(), 1)
             f.seek(0)
 
@@ -30,13 +30,22 @@ class TestVarint(unittest.TestCase):
             self.assertEqual(f.tell(), 2)
             f.seek(0)
 
-            # test three byte
+            # test three bytes
             varint.varint_write(f, 2 ** 15)
             self.assertEqual(f.tell(), 3)
             f.seek(0)
 
             varint.varint_write(f, 2 ** 21)
             self.assertEqual(f.tell(), 3)
+            f.seek(0)
+
+            # test four bytes
+            varint.varint_write(f, 2 ** 22)
+            self.assertEqual(f.tell(), 4)
+            f.seek(0)
+
+            varint.varint_write(f, 2 ** 28)
+            self.assertEqual(f.tell(), 4)
             f.seek(0)
 
     def test_rw(self):
