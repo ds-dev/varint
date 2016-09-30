@@ -4,7 +4,6 @@ import os
 
 
 class TestVarint(unittest.TestCase):
-
     def setUp(self):
         self.test_file = '/tmp/varint-test.txt'
         f = open(self.test_file, 'w')
@@ -43,8 +42,16 @@ class TestVarint(unittest.TestCase):
         self.assertEqual(f.tell(), 3)
         f.seek(0)
 
-        f.flush()
         f.close()
+
+    def test_rw(self):
+        with open(self.test_file, 'r+b') as f:
+            for pw in range(31):
+                n = 2 ** pw
+                varint.varint_write(f, n)
+                f.seek(0)
+                self.assertEqual(varint.varint_read(f), n)
+                f.seek(0)
 
 
 if __name__ == '__main__':
