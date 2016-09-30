@@ -1,1 +1,2 @@
-char test_file_seek(PyObject* p, unsigned int seek);
+int varint_read(PyObject* p);
+void varint_write(PyObject* p, int n);
