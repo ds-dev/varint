@@ -1,16 +1,30 @@
 import unittest
-import varint
 import os
+import random
+
+from . import varint as cvarint, pyvarint
 
 
 class TestVarint(unittest.TestCase):
     def setUp(self):
-        self.test_file = '/tmp/varint-test.txt'
+        self.test_file = 'varint.test.{}.tmp'.format(random.randint(0, 2 ** 31))
 
     def tearDown(self):
         os.remove(self.test_file)
 
-    def test_size(self):
+    def test_size_py(self):
+        self.__test_size(pyvarint)
+
+    def test_size_c(self):
+        self.__test_size(cvarint)
+
+    def test_rw_c(self):
+        self.__test_rw(cvarint)
+
+    def test_rw_py(self):
+        self.__test_rw(pyvarint)
+
+    def __test_size(self, varint):
         with open(self.test_file, 'w+b') as f:
             # test one byte
             varint.varint_write(f, 2 ** 0)
@@ -48,7 +62,7 @@ class TestVarint(unittest.TestCase):
             self.assertEqual(f.tell(), 4)
             f.seek(0)
 
-    def test_rw(self):
+    def __test_rw(self, varint):
         with open(self.test_file, 'w+b') as f:
             for pw in range(31):
                 n = 2 ** pw

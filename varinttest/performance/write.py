@@ -1,15 +1,16 @@
 """
 
-Usage: performance_write.py (py|c) <SAMPLE_SIZE> <FILE>
+Usage: python -m varinttest.performance.write (py|c) <SAMPLE_SIZE> <FILE>
 
 """
-from varint import varint_write as encode_c
-from pyvarint import varint_encode as encode_py
 import sys
+
+from ..varint import varint_write as encode_c
+from ..pyvarint import varint_write as encode_py
 
 if __name__ == "__main__":
     if sys.argv[1] == 'py':
-        func = lambda f, n: encode_py(n, f.write)
+        func = lambda f, n: encode_py(f, n)
     elif sys.argv[1] == 'c':
         func = lambda f, n: encode_c(f, n)
     else:

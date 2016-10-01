@@ -1,12 +1,13 @@
-from distutils.core import setup, Extension
+from setuptools import setup, find_packages, Extension
 
-setup (
-    name = 'varint',
-    version = '0.1',
-    author      = "SWIG Docs",
-    description = """Simple swig example from docs""",
-    ext_modules = [
-        Extension("_varint", sources=["varint.c", "varint.i"])
+setup(
+    name='varinttest',
+    version='0.1',
+    author="Alexander Tkatsenko",
+    description="""Varint test""",
+    packages=find_packages(),
+    ext_modules=[
+        Extension("varinttest._varint",
+                  sources=["src/varint.c", "varinttest/varint.i"])
     ],
-    py_modules = ["varint"],
 )

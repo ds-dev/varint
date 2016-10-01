@@ -1,15 +1,16 @@
 """
 
-Usage: performance_read.py (py|c) <SAMPLE_SIZE> <DATA FILE>
+Usage: python -m varinttest.performance.read (py|c) <SAMPLE_SIZE> <DATA FILE>
 
 """
-from varint import varint_read as decode_c
-from pyvarint import varint_decode as decode_py
 import sys
+
+from ..varint import varint_read as decode_c
+from ..pyvarint import varint_read as decode_py
 
 if __name__ == "__main__":
     if sys.argv[1] == 'py':
-        func = lambda f: decode_py(f.read)
+        func = lambda f: decode_py(f)
     elif sys.argv[1] == 'c':
         func = lambda f: decode_c(f)
     else:
