@@ -42,4 +42,4 @@ As the results below indicate, c-encoder is about 3 times faster that the python
     sys     0m0.093s
 
 ## Credits
-Special thanks to Artjom Lind for providing c-implementation of varint-encoding.
+Special thanks to [Artjom Lind](https://github.com/ds-dev) for providing c-implementation of varint-encoding.
