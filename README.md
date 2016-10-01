@@ -2,7 +2,7 @@
 
 [Variable-length encoding](https://en.wikipedia.org/wiki/Variable-length_quantity) enables to store
 integers using variable amount of bytes so that smaller integers consume less space than the bigger ones.
-For example, integers up to 128 (2^7) fit perfectly into one byte, integers up to 16.384 (2^14) - into two bytes, and so on.
+For example, integers up to 128 fit perfectly into one byte, integers up to 16.512 - into two bytes, and so on.
 If we need to store millions of integers (as in the case of storage systems), the gain can be substantial.
 
 This repository contains Python and C implementations of varint-encoding, as well as performance benchmarks.

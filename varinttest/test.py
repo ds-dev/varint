@@ -40,25 +40,25 @@ class TestVarint(unittest.TestCase):
             self.assertEqual(f.tell(), 2)
             f.seek(0)
 
-            varint.varint_write(f, 2 ** 14)
+            varint.varint_write(f, 2 ** 14 + 2 ** 7 - 1)
             self.assertEqual(f.tell(), 2)
             f.seek(0)
 
             # test three bytes
-            varint.varint_write(f, 2 ** 15)
+            varint.varint_write(f, 2 ** 14 + 2 ** 7)
             self.assertEqual(f.tell(), 3)
             f.seek(0)
 
-            varint.varint_write(f, 2 ** 21)
+            varint.varint_write(f, 2 ** 21 + 2 ** 14 + 2 ** 7 - 1)
             self.assertEqual(f.tell(), 3)
             f.seek(0)
 
             # test four bytes
-            varint.varint_write(f, 2 ** 22)
+            varint.varint_write(f, 2 ** 21 + 2 ** 14 + 2 ** 7)
             self.assertEqual(f.tell(), 4)
             f.seek(0)
 
-            varint.varint_write(f, 2 ** 28)
+            varint.varint_write(f, 2 ** 28 + 2 ** 21 + 2 ** 14 + 2 ** 7 - 1)
             self.assertEqual(f.tell(), 4)
             f.seek(0)
 
@@ -70,6 +70,12 @@ class TestVarint(unittest.TestCase):
                 f.seek(0)
                 self.assertEqual(varint.varint_read(f), n)
                 f.seek(0)
+
+            n = 128
+            varint.varint_write(f, n)
+            f.seek(0)
+            self.assertEqual(varint.varint_read(f), n)
+            f.seek(0)
 
 
 if __name__ == '__main__':
