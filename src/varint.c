@@ -75,6 +75,9 @@ int __varint_read(FILE* f) {
  * 	 Each time we write: the data gets appended and the file grows;
  * 	 both seek pointers are anyway at the end.
  *
+ * Currently we solve the issue by calling fflush after each
+ * read/write call from C.
+ *
  */
 int varint_read(PyObject* p) {
 	int n;
@@ -90,6 +93,7 @@ int varint_read(PyObject* p) {
 #endif
 	n = __varint_read(f);
 #ifdef HAVE_PYTHON3
+	fflush(f);
 	printf("C Seek pointer at %ld after reading\n", ftell(f));
 	Py_DECREF(p);
 #else
