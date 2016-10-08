@@ -82,7 +82,7 @@ int varint_read(PyObject* p) {
 	Py_INCREF(p);
 	int fd = PyObject_AsFileDescriptor(p);
 	FILE* f = fdopen(fd, "r+b");
-	printf("C Seek pointer at %d before reading\n", ftell(f));
+	printf("C Seek pointer at %ld before reading\n", ftell(f));
 #else
 	PyFileObject* p2 = (PyFileObject*) p;
 	FILE* f = PyFile_AsFile(p);
@@ -90,7 +90,7 @@ int varint_read(PyObject* p) {
 #endif
 	n = __varint_read(f);
 #ifdef HAVE_PYTHON3
-	printf("C Seek pointer at %d after reading\n", ftell(f));
+	printf("C Seek pointer at %ld after reading\n", ftell(f));
 	Py_DECREF(p);
 #else
 	PyFile_DecUseCount(p2);
@@ -103,7 +103,7 @@ void varint_write(PyObject* p, int n) {
 	Py_INCREF(p);
 	int fd = PyObject_AsFileDescriptor(p);
 	FILE* f = fdopen(fd, "r+b");
-	printf("C Seek pointer at %d before writing\n", ftell(f));
+	printf("C Seek pointer at %ld before writing\n", ftell(f));
 #else
 	PyFileObject* p2 = (PyFileObject*) p;
 	FILE* f = PyFile_AsFile(p);
@@ -112,7 +112,7 @@ void varint_write(PyObject* p, int n) {
 	__varint_write(f,n);
 #ifdef HAVE_PYTHON3
 	fflush(f);
-	printf("C Seek pointer at %d after writing\n", ftell(f));
+	printf("C Seek pointer at %ld after writing\n", ftell(f));
 	Py_DECREF(p);
 #else
 	PyFile_DecUseCount(p2);
