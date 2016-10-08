@@ -8,10 +8,15 @@ If we need to store millions of integers (as in the case of storage systems), th
 This repository contains Python and C implementations of varint-encoding, as well as performance benchmarks.
 
 
-## Install
+## Install Python2.x
 
     $ python setup.py build_ext --inplace
     $ python -m unittest -v varinttest.test
+
+## Install Python3.x
+
+    $ python3 setup.py build_ext --inplace
+
 
 ## Performance tests
 We compared *C* and *Python* implementations of *varint-encoding*.
