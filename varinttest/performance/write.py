@@ -5,6 +5,8 @@ Usage: python -m varinttest.performance.write (py|c) <SAMPLE_SIZE> <FILE>
 """
 import sys
 
+from six.moves import range
+
 from ..varint import varint_write as encode_c
 from ..pyvarint import varint_write as encode_py
 
@@ -20,6 +22,6 @@ if __name__ == "__main__":
     out_file = sys.argv[3]
 
     with open(out_file, 'w+b') as f:
-        for i in xrange(n_elements):
+        for i in range(n_elements):
             n = 2 ** (7 * (i % 5))
             func(f, n)
