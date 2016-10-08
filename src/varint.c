@@ -39,46 +39,7 @@ int __varint_read(FILE* f) {
     }
     return n;
 }
-/**************
- * Passing opened file from Python3
- *
- * NB! This will only work if the file is opened with no buffering
- * in Python3:
- *  	f = open('<filepath>,'r+b',buffering=0)
- *
- * The default however is buffered:
- * 		f = open('<filepath>,'r+b)
- *
- * What happens when we read x bytes the seek pointer is indeed
- * at x position ( f.tell() )
- * This seek pointer position however has nothing to do
- * with the file: it seeks over the buffered data.
- * The real seek pointer of the file might be in fact far away, or even
- * at the end of the file  (Python3 'buffered' it and therefore
- * moved the real seek pointer further away).
- *
- * The IO API of Python3 suggests we may get rid of High-Level I/O
- * encapsulation by setting 'buffering=0' each time we open the file.
- * https://docs.python.org/3.4/library/io.html#raw-i-o
- *
- * Hardly it removes the high-level encapsulation completely, but
- * the 'out-of-sync' seek pointers issue looks gone.
- * (at least for forward-writing).
- *
- * NB! forward-reading is unreliable
- *
- * Despite the disabled 'buffering', once we read from file in C
- * the seek pointers get out of sync. The seek pointer in Python3
- * falls to the end of the file.
- *
- * This was not the case with forward-writing the file:
- * 	 Each time we write: the data gets appended and the file grows;
- * 	 both seek pointers are anyway at the end.
- *
- * Currently we solve the issue by calling fflush after each
- * read/write call from C.
- *
- */
+
 int varint_read(PyObject* p) {
 	int n;
 #ifdef HAVE_PYTHON3
