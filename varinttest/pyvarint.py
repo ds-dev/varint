@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Python implementation of varint encoding."""
+from struct import pack as struct_pack, unpack as struct_unpack
 
 
 def varint_write(fileobj, n):
@@ -15,10 +16,10 @@ def varint_write(fileobj, n):
         b = n & 127
         n >>= 7
         if n == 0:
-            fileobj.write(chr(b))
+            fileobj.write(struct_pack('<B', b))
             break
         else:
-            fileobj.write(chr(b | 128))
+            fileobj.write(struct_pack('<B', b | 128))
             n -= 1
 
 
