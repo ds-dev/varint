@@ -9,8 +9,7 @@
 
 #ifdef HAVE_PYTHON3
 void __varint_write(PyObject* f, int n){
-	int c;
-	PyObject* bytes;
+	char c;
 #else
 void __varint_write(FILE* f, int n){
 #endif
@@ -21,14 +20,8 @@ void __varint_write(FILE* f, int n){
         if (n == 0) {
 /* Stupid Python3 I/O workaround! */
 #ifdef HAVE_PYTHON3
-        	bytes = PyBytes_FromStringAndSize((const char*) &b, sizeof(b));
-        	if (PyBytes_Check(bytes)) {
-        		printf ("PyBytes_Check OK! size [%ld] bytes\n",
-        				PyBytes_Size(bytes));
-        	} else {
-        		printf ("PyBytes_Check NOK!\n");
-        	}
-        	PyFile_WriteObject(bytes,f,Py_PRINT_RAW);
+        	c = (char) b;
+        	PyObject_CallMethod(f, "write", "y#", (const char*) &c, sizeof(c));
 #else
         	fputc(b,f);
 #endif
@@ -37,15 +30,8 @@ void __varint_write(FILE* f, int n){
         else {
 /* Stupid Python3 I/O workaround! */
 #ifdef HAVE_PYTHON3
-        	c = b|VARINT_BASE;
-        	bytes = PyBytes_FromStringAndSize((const char*) &c, sizeof(c));
-        	if (PyBytes_Check(bytes)) {
-        		printf ("PyBytes_Check OK! size [%ld] bytes\n",
-        		        PyBytes_Size(bytes));
-			} else {
-				printf ("PyBytes_Check NOK!\n");
-			}
-        	PyFile_WriteObject(bytes,f,Py_PRINT_RAW);
+        	c = (char )b|VARINT_BASE;
+        	PyObject_CallMethod(f, "write", "y#", (const char*) &c, sizeof(c));
 #else
         	fputc(b|VARINT_BASE,f);
 #endif
