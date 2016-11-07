@@ -14,19 +14,18 @@ if __name__ == '__main__':
     test_file = '/tmp/varint-test.txt'
 
     # write first
-    #f = open(test_file,'w+b')
-    #for n in test_ns:
-    #    varint.varint_write(f,n)
-    #f.flush()
-    #f.close()
+    f = open(test_file,'w+b')
+    for n in test_ns:
+        varint.varint_write(f,n)
+    f.flush()
+    f.close()
 
     # check if written
     f = open(test_file,'r+b')
     for exp in test_ns:
         n = varint.varint_read(f)
-        print ('Expected ' + str(exp) + ' got ' + str(n))
         assert(n == exp)
     f.close()
 
     # remove test file
-    #os.remove(test_file)
+    os.remove(test_file)
