@@ -10,6 +10,7 @@
 #ifdef HAVE_PYTHON3
 void __varint_write(PyObject* f, int n){
 	int c;
+	PyObject* bytes;
 #else
 void __varint_write(FILE* f, int n){
 #endif
@@ -20,7 +21,14 @@ void __varint_write(FILE* f, int n){
         if (n == 0) {
 /* Stupid Python3 I/O workaround! */
 #ifdef HAVE_PYTHON3
-        	PyFile_WriteString((char*) &b,f);
+        	bytes = PyBytes_FromStringAndSize((const char*) &b, sizeof(b));
+        	if (PyBytes_Check(bytes)) {
+        		printf ("PyBytes_Check OK! size [%ld] bytes\n",
+        				PyBytes_Size(bytes));
+        	} else {
+        		printf ("PyBytes_Check NOK!\n");
+        	}
+        	PyFile_WriteObject(bytes,f,Py_PRINT_RAW);
 #else
         	fputc(b,f);
 #endif
@@ -30,7 +38,14 @@ void __varint_write(FILE* f, int n){
 /* Stupid Python3 I/O workaround! */
 #ifdef HAVE_PYTHON3
         	c = b|VARINT_BASE;
-        	PyFile_WriteString((char*) &c,f);
+        	bytes = PyBytes_FromStringAndSize((const char*) &c, sizeof(c));
+        	if (PyBytes_Check(bytes)) {
+        		printf ("PyBytes_Check OK! size [%ld] bytes\n",
+        		        PyBytes_Size(bytes));
+			} else {
+				printf ("PyBytes_Check NOK!\n");
+			}
+        	PyFile_WriteObject(bytes,f,Py_PRINT_RAW);
 #else
         	fputc(b|VARINT_BASE,f);
 #endif
@@ -55,9 +70,9 @@ int __varint_read(FILE* f) {
 #ifdef HAVE_PYTHON3
     	/* Read the damn 1 byte using Python API */
     	t = PyFile_GetLine(f,1);
-    	/* Convert it to Python3's fancy ByteArray */
+    	/* Convert it to Python3's fancy byterray */
 		t = PyByteArray_FromObject(t);
-		/* Get the C pointer to char array */
+		/* Get the C pointer to corresponding char array */
 		tc = PyByteArray_AsString(t);
 		/* Get the char value */
 		b = tc[0];
