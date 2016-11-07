@@ -54,13 +54,8 @@ int __varint_read(FILE* f) {
     while (TRUE) {
 /* Stupid Python3 I/O workaround! */
 #ifdef HAVE_PYTHON3
-    	/* Read the damn 1 byte using Python API */
-    	t = PyFile_GetLine(f,1);
-    	/* Convert it to Python3's fancy byterray */
-		t = PyByteArray_FromObject(t);
-		/* Get the C pointer to corresponding char array */
-		tc = PyByteArray_AsString(t);
-		/* Get the char value */
+    	t = PyObject_CallMethod(f, "read", "h", 1);
+		tc = PyBytes_AS_STRING(t);
 		b = tc[0];
 #else
         b = fgetc(f);
