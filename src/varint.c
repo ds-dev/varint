@@ -42,8 +42,7 @@ void __varint_write(FILE* f, int n){
 
 #ifdef HAVE_PYTHON3
 int __varint_read(PyObject* f) {
-	PyObject* t;
-	char* tc;
+	PyBytesObject* t;
 #else
 int __varint_read(FILE* f) {
 #endif
@@ -55,8 +54,7 @@ int __varint_read(FILE* f) {
 /* Stupid Python3 I/O workaround! */
 #ifdef HAVE_PYTHON3
     	t = PyObject_CallMethod(f, "read", "h", 1);
-		tc = PyBytes_AS_STRING(t);
-		b = tc[0];
+		b = t->ob_sval[0];
 #else
         b = fgetc(f);
 #endif
